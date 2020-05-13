@@ -1,26 +1,27 @@
 package com.wsw.home;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
-public class Home extends HttpServlet {
+import com.wsw.annotation.XwellComponent;
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
-        System.out.println("dopost");
-        req.getRequestDispatcher("").forward(req,resp);
-        resp.sendRedirect("");
+import java.util.regex.Pattern;
+
+@XwellComponent
+public class Home {
+
+    public static void main(String[] args) {
+        String str = "aa文字1bb哈636f7079e79fa5e9819331333365656633哈cc测试dx，测试字符串aa1234bb";
+
+        // 替换aa、bb之间的字符串为 "成功"
+        String str1 = str.replaceAll("aa.*?bb", "aa成功bb");
+        System.out.println(str1);
+
+        // 替换aa、bb之间的字符串为 "成功"
+        String str2 = str.replaceAll("(aa).*?(bb)", "$1成功$2");
+        System.out.println(str2);
+
+        // 替换小写字母之间的字符串为 "成功"
+        String str3 = str.replaceAll("([a-z]+).*?([a-z]+)", "$1成功$2");
+        System.out.println(str3);
     }
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doGet(req, resp);
-        System.out.println("doget");
-        System.out.println("中文");
-
-    }
 }

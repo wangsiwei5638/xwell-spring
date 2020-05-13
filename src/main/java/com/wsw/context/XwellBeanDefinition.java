@@ -8,6 +8,32 @@ package com.wsw.context;
  */
 public class XwellBeanDefinition {
 
-    private String beanName;
+    private String beanClassName;
+    private String factoryBeanName;
+    private Boolean lazyInit = true;
 
+
+    public String getBeanClassName() {
+        return beanClassName;
+    }
+
+    public void setBeanClassName(String beanClassName) {
+        this.beanClassName = beanClassName;
+    }
+
+    public String getFactoryBeanName() {
+        return factoryBeanName;
+    }
+
+    public void setFactoryBeanName(String factoryBeanName) {
+        this.factoryBeanName = factoryBeanName;
+    }
+
+    @Override
+    public String toString() {
+        return "XwellBeanDefinition{" +
+                "beanClassName='" + beanClassName + '\'' +
+                ", factoryBeanName='" + factoryBeanName + '\'' +
+                '}';
+    }
 }

@@ -6,7 +6,12 @@ package com.wsw.context;
  * @Author : wsw
  * @Date: 2020-05-11 13:34
  */
-public class XwellApplicationContex {
+public class XwellApplicationContex implements XwellBeanFactory{
+
+
+    public XwellApplicationContex(String config){
+
+    }
 
 
     public Object getBean(String beanName){

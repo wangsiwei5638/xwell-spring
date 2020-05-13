@@ -1,5 +1,28 @@
-+ 容器框架 主要功能模块 AOP IOC DI MVC 
+# xwell-rpc
 
+### 简介
+模仿spring实现自己的容器框架，取其精华用之。
+xwell-spring实现了控制反转、依赖注入、web请求处理、切面等功能，可通过该项目更好的理解spring源码
+
+### 流程
++ 配置阶段
+    + 设置web.xml
+    + 设置init-param
+    + 设置url-pattern
+    + 配置注解
++ 初始化阶段
+    + 入口servlet中初始化IOC容器与springMVC组件
+    + IOC容器初始化
+    + 扫描相关类
+    + IOC实例化并保存至容器map中
+    + DI操作
+    + 初始化HandlerMapping
++ 运行阶段
+    + webmvc服务匹配HanderMapping
+    + 反射调用方法
+    + 返回写入浏览器
+
+### 主要类与职责
 + IOC & DI
     + ApplicationContex：xwell-spring的主入口
     + BeanDefinitionReader：读取配置文件并解析，

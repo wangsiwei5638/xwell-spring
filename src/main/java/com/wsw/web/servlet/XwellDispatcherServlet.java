@@ -1,6 +1,7 @@
 package com.wsw.web.servlet;
 
 import com.wsw.context.XwellApplicationContex;
+import com.wsw.exception.IOCException;
 import com.wsw.support.XwellBeanDefinitionReader;
 
 import javax.servlet.*;
@@ -15,16 +16,16 @@ import java.io.IOException;
  * @Author : wsw
  * @Date: 2020-05-11 13:35
  */
-public class XwellDispatcherServlet implements Servlet {
+public class XwellDispatcherServlet extends XwellFrameworkServlet {
 
 
     public void init(ServletConfig config) throws ServletException {
-        System.out.println("init");
-        XwellBeanDefinitionReader xwellBeanDefinitionReader = new XwellBeanDefinitionReader();
-        xwellBeanDefinitionReader.init();
-
-        XwellApplicationContex applicationContex = null;//todo
-        initStrategies(applicationContex);
+//        System.out.println("init");
+//        XwellBeanDefinitionReader xwellBeanDefinitionReader = new XwellBeanDefinitionReader();
+//        xwellBeanDefinitionReader.init("application.properties");
+//
+//        XwellApplicationContex applicationContex = null;//todo
+//        initStrategies(applicationContex);
 
     }
 
@@ -38,6 +39,14 @@ public class XwellDispatcherServlet implements Servlet {
     }
 
     public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
+
+        try {
+            new XwellBeanDefinitionReader("application.properties").loadBeanDefinition();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOCException e) {
+            e.printStackTrace();
+        }
 
     }
 

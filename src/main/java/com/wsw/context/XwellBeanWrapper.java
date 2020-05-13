@@ -11,4 +11,19 @@ public class XwellBeanWrapper {
     private Object instance;
     private Class instanceClass;
 
+    public Object getInstance() {
+        return instance;
+    }
+
+    public void setInstance(Object instance) {
+        this.instance = instance;
+    }
+
+    public Class getInstanceClass() {
+        return instanceClass;
+    }
+
+    public void setInstanceClass(Class instanceClass) {
+        this.instanceClass = instanceClass;
+    }
 }
