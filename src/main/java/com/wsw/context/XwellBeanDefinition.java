@@ -1,5 +1,7 @@
 package com.wsw.context;
 
+import com.wsw.common.Constant;
+
 /**
  * @ClassName : XwellBeanDefinition
  * @Description : bean定义
@@ -8,9 +10,23 @@ package com.wsw.context;
  */
 public class XwellBeanDefinition {
 
+    /**
+     * bean的全限定名 ,例如 com.wsw.context.XwellBeanDefinition
+     */
     private String beanClassName;
+    /**
+     * bean在xwell-spring工厂中的名称
+     */
     private String factoryBeanName;
-    private Boolean lazyInit = true;
+    /**
+     * 是否懒加载
+     */
+    private boolean isLazyInit = true;
+    /**
+     * bean的生命周期
+     * @see Constant
+     */
+    private String scope = Constant.SCOPE_SINGLETON.name;
 
 
     public String getBeanClassName() {
@@ -27,6 +43,22 @@ public class XwellBeanDefinition {
 
     public void setFactoryBeanName(String factoryBeanName) {
         this.factoryBeanName = factoryBeanName;
+    }
+
+    public String getScope() {
+        return scope;
+    }
+
+    public void setScope(String scope) {
+        this.scope = scope;
+    }
+
+    public boolean isLazyInit() {
+        return isLazyInit;
+    }
+
+    public void setLazyInit(boolean lazyInit) {
+        isLazyInit = lazyInit;
     }
 
     @Override

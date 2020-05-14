@@ -26,7 +26,7 @@ public class XwellBeanDefinitionReader {
     private Set<String> regiestBeanClasses = new HashSet();
 
     public XwellBeanDefinitionReader(String config) throws IOCException {
-        init(config);
+        initCfg(config);
         doScanner();
     }
 
@@ -41,7 +41,9 @@ public class XwellBeanDefinitionReader {
 //
 //    }
 
-    //加载beanDefinition
+    /**
+     * 生成beanDefinition对象
+     */
     public List<XwellBeanDefinition> loadBeanDefinition() throws ClassNotFoundException {
         List<XwellBeanDefinition> beanDefinitions = new LinkedList<XwellBeanDefinition>();
         f1:for (String className : regiestBeanClasses) {
@@ -53,13 +55,16 @@ public class XwellBeanDefinitionReader {
             //封装
             XwellBeanDefinition beanDefinition = new XwellBeanDefinition();
             String simpleName = clazz.getSimpleName();
-            beanDefinition.setBeanClassName(Func.toLowerFristCase(simpleName));
-            beanDefinition.setFactoryBeanName(clazz.getName());
+            beanDefinition.setBeanClassName(clazz.getName());
+            beanDefinition.setFactoryBeanName(Func.toLowerFristCase(simpleName));
             beanDefinitions.add(beanDefinition);
         }
         return beanDefinitions;
     }
 
+    /**
+     * 扫描配置文件下的包
+     */
     private void doScanner() throws IOCException {
         if(properties == null){
             throw new IOCException("配置文件为空");
@@ -93,7 +98,10 @@ public class XwellBeanDefinitionReader {
         }
     }
 
-    private void init(String config){
+    /**
+     * 初始化配置文件，获取配置相关信息
+     */
+    private void initCfg(String config){
         if(properties == null){
             properties = new Properties();
         }

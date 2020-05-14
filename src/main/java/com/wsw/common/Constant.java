@@ -3,7 +3,9 @@ package com.wsw.common;
 import java.util.Properties;
 
 public enum Constant {
-    SCAN_PKG("scanPackage","扫描包路径")
+    SCAN_PKG("scanPackage","扫描包路径"),
+    SCOPE_SINGLETON("singleton","单例"),
+    SCOPE_PROTOTYPE("prototype","多例")
 
     ;
 
@@ -14,14 +16,14 @@ public enum Constant {
         this.desc = desc;
     }
 
-    public Object getPropertiesVal(Properties properties,Constant c){
+    public static Object getPropertiesVal(Properties properties,Constant c){
         return properties.get(c);
     }
 
     public static String getPropertiesStringVal(Properties properties,Constant c){
         Object res;
 
-        if(!((res = properties.get(c.name)) instanceof String)){
+        if(!((res = getPropertiesVal(properties,c)) instanceof String)){
             throw new ClassCastException("不能转换为String");
         }
         return (String) res;

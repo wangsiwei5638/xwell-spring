@@ -19,6 +19,7 @@ import java.io.IOException;
 public class XwellDispatcherServlet extends XwellFrameworkServlet {
 
 
+
     public void init(ServletConfig config) throws ServletException {
 //        System.out.println("init");
 //        XwellBeanDefinitionReader xwellBeanDefinitionReader = new XwellBeanDefinitionReader();
@@ -40,13 +41,7 @@ public class XwellDispatcherServlet extends XwellFrameworkServlet {
 
     public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
 
-        try {
-            new XwellBeanDefinitionReader("application.properties").loadBeanDefinition();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOCException e) {
-            e.printStackTrace();
-        }
+
 
     }
 

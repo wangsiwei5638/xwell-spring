@@ -8,6 +8,6 @@ package com.wsw.context;
  */
 public interface XwellBeanFactory {
 
-    Object getBean(Class clazz);
+//    Object getBean(Class clazz);
 
 }
