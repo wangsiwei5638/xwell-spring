@@ -153,17 +153,6 @@ public class XwellApplicationContext implements XwellBeanFactory{
 
     }
 
-    public static void main(String[] args) throws NoSuchFieldException, IllegalAccessException {
-        Home home = new Home();
-        Class<Test1> test1Class = Test1.class;
-
-        Field test1 = home.getClass().getDeclaredField("test1");
-        test1.setAccessible(true);
-        test1.set(home,new Test1());
-        System.out.println(home);
-
-    }
-
     /**
      * 创建对象实例/AOP代理对象
      */
@@ -199,5 +188,15 @@ public class XwellApplicationContext implements XwellBeanFactory{
         return (T) getBean(clazz.getName());
     }
 
+    public Map<String,XwellBeanDefinition> getBeanDefinitions(){
+        return this.beanDefinitionMapC;
+    }
 
+    public Map<String, XwellBeanWrapper> getFactoryBeanCache() {
+        return factoryBeanCache;
+    }
+
+    public String[] getConfigs() {
+        return configs;
+    }
 }
