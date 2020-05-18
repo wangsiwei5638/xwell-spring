@@ -19,7 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @Author : wsw
  * @Date: 2020-05-11 13:34
  */
-public class XwellApplicationContex implements XwellBeanFactory{
+public class XwellApplicationContext implements XwellBeanFactory{
 
     private XwellBeanDefinitionReader beanDefinitionReader;
     /**
@@ -39,7 +39,7 @@ public class XwellApplicationContex implements XwellBeanFactory{
 
     private String[] configs;
 
-    public XwellApplicationContex(String... configs){
+    public XwellApplicationContext(String... configs){
 
         try {
             this.configs = configs;

@@ -1,13 +1,9 @@
 package com.wsw.web.servlet;
 
-import com.wsw.context.XwellApplicationContex;
-import com.wsw.exception.DIException;
-import com.wsw.exception.IOCException;
-import com.wsw.home.Home;
-import com.wsw.support.XwellBeanDefinitionReader;
+import com.wsw.context.XwellApplicationContext;
+import com.wsw.context.XwellBeanFactory;
 
 import javax.servlet.*;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -19,42 +15,70 @@ import java.io.IOException;
  * @Date: 2020-05-11 13:35
  */
 public class XwellDispatcherServlet extends XwellFrameworkServlet {
+//    XwellApplicationContex applicationContex = new XwellApplicationContex("application.properties");
 
+    //Bean工厂 IOC容器
+    private XwellBeanFactory applicationContext;
 
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        this.doPost(req,resp);
+    }
 
-    public void init(ServletConfig config) throws ServletException {
+    /**
+     * 请求调度器，执行handler
+     */
+    protected void doDispatch(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        //根据请求URL获取handerMapping
+
+        //根据handerMapping获取handerAdapter
+
+        //执行hander，获取modeAndView
+
+        //结果处理
 
     }
 
-    private void initStrategies(XwellApplicationContex applicationContex) {
-
-    }
-
-
-    public ServletConfig getServletConfig() {
-        return null;
-    }
-
-    public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
-
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         try {
-            XwellApplicationContex applicationContex = new XwellApplicationContex("application.properties");
-            Home bean = applicationContex.getBean(Home.class);
-            bean.say();
-        } catch (IOCException e) {
-            e.printStackTrace();
-        } catch (DIException e) {
+            doDispatch(req,resp);
+        } catch (Exception e) {
+            //todo initHandlerExceptionResolvers
             e.printStackTrace();
         }
 
-    }
-
-    public String getServletInfo() {
-        return null;
-    }
-
-    public void destroy() {
 
     }
+
+
+    /**
+     * 初始化
+     */
+    protected void initStrategies(XwellApplicationContext context) {
+//        initMultipartResolver(context);
+//        initLocaleResolver(context);
+//        initThemeResolver(context);
+        initHandlerMappings(context);
+        initHandlerAdapters(context);
+//        initHandlerExceptionResolvers(context);
+//        initRequestToViewNameTranslator(context);
+        initViewResolvers(context);
+//        initFlashMapManager(context);
+    }
+
+    private void initViewResolvers(XwellApplicationContext context) {
+
+    }
+
+    private void initHandlerAdapters(XwellApplicationContext context) {
+
+    }
+
+    private void initHandlerMappings(XwellApplicationContext context) {
+    }
+
+
 }

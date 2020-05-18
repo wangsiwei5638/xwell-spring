@@ -1,5 +1,8 @@
 package com.wsw.context;
 
+import com.wsw.exception.DIException;
+import com.wsw.exception.IOCException;
+
 /**
  * @ClassName : XwellBeanFactory
  * @Description : 容器工厂
@@ -8,6 +11,15 @@ package com.wsw.context;
  */
 public interface XwellBeanFactory {
 
-//    Object getBean(Class clazz);
+    /**
+     * 通过class获取bean
+     */
+    <T> T getBean(Class<T> clazz) throws IOCException, DIException ;
+
+    /**
+     * 通过工厂名称获取bean，
+     * <p>例如 @XwellAutoWired("beanName")</p>
+     */
+    Object getBean(String beanName) throws IOCException, DIException ;
 
 }

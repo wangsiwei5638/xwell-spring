@@ -3,11 +3,7 @@ package com.wsw.home;
 
 import com.wsw.annotation.XwellAutoWired;
 import com.wsw.annotation.XwellComponent;
-import com.wsw.context.XwellApplicationContex;
-import com.wsw.exception.DIException;
-import com.wsw.exception.IOCException;
-
-import java.util.regex.Pattern;
+import com.wsw.context.XwellApplicationContext;
 
 @XwellComponent
 public class Home {
@@ -17,7 +13,7 @@ public class Home {
 
     public static void main(String[] args) throws Exception {
 //        System.out.println(Home.class.isAnnotationPresent(XwellComponent.class));
-        XwellApplicationContex applicationContex = new XwellApplicationContex("application.properties");
+        XwellApplicationContext applicationContex = new XwellApplicationContext("application.properties");
         Home bean = applicationContex.getBean(Home.class);
     }
 
