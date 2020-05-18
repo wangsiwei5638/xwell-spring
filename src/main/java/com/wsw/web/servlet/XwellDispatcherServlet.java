@@ -1,7 +1,9 @@
 package com.wsw.web.servlet;
 
 import com.wsw.context.XwellApplicationContex;
+import com.wsw.exception.DIException;
 import com.wsw.exception.IOCException;
+import com.wsw.home.Home;
 import com.wsw.support.XwellBeanDefinitionReader;
 
 import javax.servlet.*;
@@ -21,12 +23,6 @@ public class XwellDispatcherServlet extends XwellFrameworkServlet {
 
 
     public void init(ServletConfig config) throws ServletException {
-//        System.out.println("init");
-//        XwellBeanDefinitionReader xwellBeanDefinitionReader = new XwellBeanDefinitionReader();
-//        xwellBeanDefinitionReader.init("application.properties");
-//
-//        XwellApplicationContex applicationContex = null;//todo
-//        initStrategies(applicationContex);
 
     }
 
@@ -42,6 +38,15 @@ public class XwellDispatcherServlet extends XwellFrameworkServlet {
     public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
 
 
+        try {
+            XwellApplicationContex applicationContex = new XwellApplicationContex("application.properties");
+            Home bean = applicationContex.getBean(Home.class);
+            bean.say();
+        } catch (IOCException e) {
+            e.printStackTrace();
+        } catch (DIException e) {
+            e.printStackTrace();
+        }
 
     }
 

@@ -1,9 +1,14 @@
 package com.wsw.context;
 
+import com.wsw.annotation.XwellAutoWired;
+import com.wsw.annotation.XwellComponent;
 import com.wsw.exception.DIException;
 import com.wsw.exception.IOCException;
+import com.wsw.home.Home;
+import com.wsw.home.Test1;
 import com.wsw.support.XwellBeanDefinitionReader;
 
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -18,15 +23,15 @@ public class XwellApplicationContex implements XwellBeanFactory{
 
     private XwellBeanDefinitionReader beanDefinitionReader;
     /**
-     * bean的定义缓存 key-bean工厂名，value-bean的定义
+     * bean的定义缓存 key-bean工厂名，value-bean的定义 (扫描包下所有class)
      */
     protected final Map<String,XwellBeanDefinition> beanDefinitionMapF = new ConcurrentHashMap<String, XwellBeanDefinition>();
     /**
-     * bean的定义缓存 key-bean全限定名，value-bean的定义
+     * bean的定义缓存 key-bean全限定名，value-bean的定义 (扫描包下所有class)
      */
     protected final Map<String,XwellBeanDefinition> beanDefinitionMapC = new ConcurrentHashMap<String, XwellBeanDefinition>();
     /**
-     * IOC容器
+     * IOC容器,key-bean全限定名
      */
     protected final Map<String,XwellBeanWrapper> factoryBeanCache = new ConcurrentHashMap<String, XwellBeanWrapper>();
 
@@ -86,21 +91,77 @@ public class XwellApplicationContex implements XwellBeanFactory{
 
     }
 
-
-    //TODO
-    public Object getBean(String beanName) throws IOCException, DIException {
-
-        Object instance;
+    private XwellBeanDefinition getBeanDefinition(String beanName){
         XwellBeanDefinition beanDefinition;
         if((beanDefinition = beanDefinitionMapF.get(beanName)) == null){
             beanDefinition = beanDefinitionMapC.get(beanName);
         }
+        return beanDefinition;
+    }
+
+    public Object getBean(String beanName) throws IOCException, DIException {
+
+        Object instance;
+        XwellBeanDefinition beanDefinition = getBeanDefinition(beanName);
+
         if(beanDefinition == null){
             throw new IOCException(String.format("未找到beanName=%s对应的beanDefinition",beanName));
         }
-        //反射处理
+        //反射处理，实例化bean
         instance = instantiateBean(beanDefinition);
-        return null;
+        XwellBeanWrapper beanWrapper = new XwellBeanWrapper(instance);
+        factoryBeanCache.put(beanDefinition.getBeanClassName(),beanWrapper);
+        //依赖注入
+        populateBean(beanName,beanDefinition,beanWrapper);
+
+        return this.factoryBeanCache.get(beanDefinition.getBeanClassName()).getInstance();
+    }
+
+    private void populateBean(String beanName, XwellBeanDefinition beanDefinition, XwellBeanWrapper beanWrapper)
+            throws IOCException, DIException {
+
+        Object instance = beanWrapper.getInstance();
+        Class instanceClass = beanWrapper.getInstanceClass();
+        String beanClassName = beanDefinition.getBeanClassName();
+
+        Field[] fields = instanceClass.getDeclaredFields();
+        f1:for (Field field : fields) {
+            if(!field.isAnnotationPresent(XwellAutoWired.class)){
+                continue f1;
+            }
+            XwellAutoWired autoWired = field.getAnnotation(XwellAutoWired.class);
+            String autoWiredName = autoWired.value().trim();
+            //为空则默认为className
+            if("".equals(autoWiredName)){
+                autoWiredName = field.getType().getName();
+            }
+            field.setAccessible(true);
+            //查询需要注入的对象在xwell-spring容器中是否存在
+            //如果不存在则创建并注册该对象实例到容器中
+            String fieldClassName;
+            if(factoryBeanCache.get(fieldClassName=field.getType().getName()) == null){
+                getBean(autoWiredName);
+            }
+            try {
+                field.set(instance,this.factoryBeanCache.get(fieldClassName).getInstance());
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+                throw new DIException(String.format("注入%s对象异常",beanClassName));
+            }
+
+        }
+
+    }
+
+    public static void main(String[] args) throws NoSuchFieldException, IllegalAccessException {
+        Home home = new Home();
+        Class<Test1> test1Class = Test1.class;
+
+        Field test1 = home.getClass().getDeclaredField("test1");
+        test1.setAccessible(true);
+        test1.set(home,new Test1());
+        System.out.println(home);
+
     }
 
     /**
@@ -114,11 +175,15 @@ public class XwellApplicationContex implements XwellBeanFactory{
                 return factoryBeanCache.get(beanClassName).getInstance();
             }
             clazz = Class.forName(beanClassName);
+            //检查是否需要实例化
+            boolean b = clazz.isAnnotationPresent(XwellComponent.class);
+            if(!b){
+                System.out.println(String.format("%s未被标注自动注入注解，请检查配置或代码。",beanClassName));
+                throw new IOCException(String.format("%s未被标注自动注入注解，请检查配置或代码。",beanClassName));
+            }
+
             Object o = clazz.newInstance();
-            XwellBeanWrapper xwellBeanWrapper = new XwellBeanWrapper();
-            xwellBeanWrapper.setInstance(o);
-            xwellBeanWrapper.setInstanceClass(clazz);
-            factoryBeanCache.put(beanClassName,xwellBeanWrapper);
+            System.out.println(String.format("创建%s实例完成",beanClassName));
             return o;
 
         } catch (Exception e) {

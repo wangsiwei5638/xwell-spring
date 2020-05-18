@@ -17,7 +17,7 @@ public enum Constant {
     }
 
     public static Object getPropertiesVal(Properties properties,Constant c){
-        return properties.get(c);
+        return properties.get(c.name);
     }
 
     public static String getPropertiesStringVal(Properties properties,Constant c){

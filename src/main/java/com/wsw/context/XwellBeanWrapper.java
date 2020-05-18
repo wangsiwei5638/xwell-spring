@@ -11,6 +11,15 @@ public class XwellBeanWrapper {
     private Object instance;
     private Class instanceClass;
 
+    public XwellBeanWrapper() {
+        super();
+    }
+
+    public XwellBeanWrapper(Object instance) {
+        this.instance = instance;
+        this.instanceClass = instance.getClass();
+    }
+
     public Object getInstance() {
         return instance;
     }
