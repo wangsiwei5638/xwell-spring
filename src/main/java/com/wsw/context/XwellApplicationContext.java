@@ -4,8 +4,6 @@ import com.wsw.annotation.XwellAutoWired;
 import com.wsw.annotation.XwellComponent;
 import com.wsw.exception.DIException;
 import com.wsw.exception.IOCException;
-import com.wsw.home.Home;
-import com.wsw.home.Test1;
 import com.wsw.support.XwellBeanDefinitionReader;
 
 import java.lang.reflect.Field;
