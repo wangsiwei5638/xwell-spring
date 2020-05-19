@@ -1,6 +1,7 @@
 package com.wsw.web.mvc;
 
 import java.lang.reflect.Method;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -24,6 +25,13 @@ public class XwellHanderMapping {
      */
     private Pattern urlPattern;
 
+    /**
+     * 是否匹配
+     */
+    public boolean match(String url){
+        Matcher matcher = this.urlPattern.matcher(url);
+        return matcher.matches();
+    }
 
     public XwellHanderMapping(Object controller, Method method, Pattern urlPattern) {
         this.controller = controller;

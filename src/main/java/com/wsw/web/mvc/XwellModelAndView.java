@@ -1,5 +1,8 @@
 package com.wsw.web.mvc;
 
+import com.wsw.common.HttpStatusEnum;
+
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -11,11 +14,28 @@ import java.util.Map;
 public class XwellModelAndView {
 
     private String viewName;
+    private HttpStatusEnum httpStatusEnum;
     private Map<String,?> model;
+
+    public static Map<String,Object> newModelDef(){
+        Map<String, Object> res = new HashMap<>();
+        return res;
+    }
+
+    public XwellModelAndView(String viewName, HttpStatusEnum httpStatusEnum, Map<String, ?> model) {
+        this.viewName = viewName;
+        this.httpStatusEnum = httpStatusEnum;
+        this.model = model;
+    }
 
     public XwellModelAndView(String viewName, Map<String, ?> model) {
         this.viewName = viewName;
         this.model = model;
+        this.httpStatusEnum = HttpStatusEnum.OK;
+    }
+
+    public XwellModelAndView(HttpStatusEnum httpStatusEnum) {
+        this.httpStatusEnum = httpStatusEnum;
     }
 
     public XwellModelAndView() {

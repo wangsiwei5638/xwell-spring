@@ -11,4 +11,8 @@ import java.lang.annotation.*;
 @Documented
 public @interface XwellRequestParam {
 
+    String value() default "";
+
+    boolean required() default true;
+
 }
